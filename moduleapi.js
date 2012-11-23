@@ -6,7 +6,6 @@
 * between themselves
 * @namespace FM.APIS
 */
-FM.APIS = {};
 FM.APIS.moduleapi = (function(){
     //creates a listener for a channel. Takes a channel ID and a function to be executed
     var listen = function(channel, fn){
