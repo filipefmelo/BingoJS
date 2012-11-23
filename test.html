@@ -29,11 +29,13 @@
         <script src="bingoServer.module.js"></script>
 
         <script>
-            var bserver = FM.Services.bingoserver,
-            card1 = bserver.generateCard(),
-            card2 = bserver.generateCard();
-            console.log(card1.getNumbers());
-            console.log(card2.getNumbers());
+            var bserver = FM.Services.bingoserver;
+
+            console.log(bserver.getGeneratedNumbers());
+            for(var i=0; i<75 ; i++){
+                console.log(bserver.generateNumber());
+                console.log(bserver.getGeneratedNumbers());
+            }
         </script>
     </body>
 </html>

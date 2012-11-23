@@ -9,8 +9,11 @@
 FM.Services.bingoserver = (function(Card){
 	//private declarations
     var
-    cardId = 0,
-    generatedNumbers = []; 
+    _cardId = 0,
+    _generatedNumbers = [],
+    _numbersToBeGenerated = [],
+    _maxGeneratedNumbers = 75,
+
     //generates a bingo card and returns it to the callee
     _generateCard = function(){
     	var numbers = [], i = 25;
@@ -21,32 +24,47 @@ FM.Services.bingoserver = (function(Card){
     		});
     		i--;
     	}while(i!=0)
-    	return new Card(cardId++, numbers);
+    	return new Card(_cardId++, numbers);
     },
 
     //generates a new and not existent number
     _generateNumber = function(){
-    	var number = {};
-    	do{
-    		number = Math.round(1+(Math.random()*74));
-    	}while(_numberNotNew(number));
-    	return number;
+    	var number = {},
+        randomIndex = Math.round(Math.random()*(_numbersToBeGenerated.length-1)), //get a random index for the elements left in _numbersToBeGenerated
+    	generatedNumber = _numbersToBeGenerated[randomIndex];
+        _generatedNumbers.push(generatedNumber);
+        _numbersToBeGenerated.splice(randomIndex,1); //delete the number from the left possible numbers
+
+        return generatedNumber;
     },
 
-    //checks if a number has already been generated
-    _numberNotNew = function(number){
-    	var i = generatedNumbers.length;
-    	do{
-    		if(generatedNumbers[i] == number) return true;
-    	}while(i!=0);
+    //reset the generated numbers list
+    _resetGeneratedNumbers = function(){
+        var i = 0;
+        _generatedNumbers = [];
+        _numbersToBeGenerated = [];
 
-    	return false;
+         //generate a list of possible numbers to be withdrawn. Performance fix.
+        do{
+            _numbersToBeGenerated.push(i+1);
+            i++;
+        }while(i<_maxGeneratedNumbers);
+    },
+
+    //get the generated numbers list
+    _getGeneratedNumbers = function(){
+        return _generatedNumbers;
     };
+
+    //first run method
+    _resetGeneratedNumbers();
  
  	//create public interface
     return {
         generateCard: _generateCard,
-        generateNumber: _generateNumber
+        generateNumber: _generateNumber,
+        getGeneratedNumbers: _getGeneratedNumbers,
+        resetGeneratedNumbers: _resetGeneratedNumbers,
     };
  
 }(Card));
