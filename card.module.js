@@ -51,7 +51,8 @@ FM.Modules.Card = function(id, numbers) {
     }
 
     //checks if card is completely marked
-    function _checkIfComplete(){
+    //TODO: check if the numbers marked match all the numbers added by the bingoServer class
+    function _checkIfComplete(game_numbers){
         var nnumbers = _numbers.length,
         nmarked = 0;
         for(var i = 0; i < nnumbers; i++){

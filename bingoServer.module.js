@@ -64,7 +64,7 @@ FM.Services.bingoserver = new function(){
         var ncards = _generatedCards.length,
         n_winners = 0;
         for(var i = 0; i < ncards; i++){
-           if(_generatedCards[i].checkIfComplete()){
+           if(_generatedCards[i].checkIfComplete(_generatedNumbers)){
                 n_winners++;
            }
         }
