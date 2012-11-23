@@ -6,10 +6,7 @@
 * This allows easier inheritance
 * @namespace FM.Modules
 */
-FM.Modules.baseModule = (function(moduleapi) {
-    var moduleapi = moduleapi;
-
-    return {
-        moduleapi: moduleapi
-    }
-}(FM.APIS.moduleapi));
+FM.Modules.baseModule = new function() {
+    this.moduleapi = FM.APIS.moduleapi;
+    return this;
+};

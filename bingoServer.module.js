@@ -6,25 +6,52 @@
 * This works as a service
 * @namespace FM.Services
 */
-FM.Services.bingoserver = (function(Card){
+FM.Services.bingoserver = new function(){
 	//private declarations
     var
-    _cardId = 0,
     _generatedNumbers = [],
     _numbersToBeGenerated = [],
     _maxGeneratedNumbers = 75,
+    _generatedCards = [],
+    _lastCardId = 0,
 
-    //generates a bingo card and returns it to the callee
+
+    //constructor
+    _init = function(){
+        //extend bingoServer with baseModule to make it communicable
+        FM.Utils.extend(this, FM.Modules.baseModule);
+        _resetGeneratedNumbers();
+    },
+
+    //generates a new card
     _generateCard = function(){
-    	var numbers = [], i = 25;
-    	do{
-    		numbers.push({
-    			value: Math.round(1+(Math.random()*74)),
-    			marked: false
-    		});
-    		i--;
-    	}while(i!=0)
-    	return new Card(_cardId++, numbers);
+        var
+        card = {}
+        availableNumbers = [],
+        i = 0,
+        maxNumbers = 25,
+        numbers = [];
+
+        //generate sequencial available numbers
+        do{
+            availableNumbers.push(i+1);
+            i++;
+        }while(i<maxNumbers);
+
+        i = 0;
+        do{
+            randomIndex = Math.round(Math.random()*(availableNumbers.length-1)), //get a random index for the elements left in _numbersToBeGenerated
+
+            numbers.push({
+                value: availableNumbers[randomIndex],
+                marked: false
+            });
+            availableNumbers.splice(randomIndex,1); //delete the number from the left possible numbers
+
+            i++;
+        }while(i<maxNumbers);
+
+        return new FM.Modules.Card(++_lastCardId, numbers);
     },
 
     //generates a new and not existent number
@@ -57,17 +84,15 @@ FM.Services.bingoserver = (function(Card){
     };
 
     //first run method
-    _resetGeneratedNumbers();
+    _init();
+
  
  	//create public interface
     return {
-        generateCard: _generateCard,
         generateNumber: _generateNumber,
         getGeneratedNumbers: _getGeneratedNumbers,
         resetGeneratedNumbers: _resetGeneratedNumbers,
+        generateCard: _generateCard
     };
  
-}(Card));
-
-//extend bingoServer with baseModule to make it communicable
-FM.Services.bingoserver = FM.Utils.extend(FM.Services.bingoserver, FM.Modules.baseModule);
+};
