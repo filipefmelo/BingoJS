@@ -30,28 +30,45 @@ FM.Services.bingoserver = new function(){
         availableNumbers = [],
         i = 0,
         maxNumbers = 25,
+        maxAvailableNumbers = 75,
         numbers = [];
 
         //generate sequencial available numbers
         do{
             availableNumbers.push(i+1);
             i++;
-        }while(i<maxNumbers);
+        }while(i<maxAvailableNumbers);
 
         i = 0;
         do{
             randomIndex = Math.round(Math.random()*(availableNumbers.length-1)), //get a random index for the elements left in _numbersToBeGenerated
-
             numbers.push({
                 value: availableNumbers[randomIndex],
                 marked: false
             });
             availableNumbers.splice(randomIndex,1); //delete the number from the left possible numbers
-
             i++;
         }while(i<maxNumbers);
 
-        return new FM.Modules.Card(++_lastCardId, numbers);
+        numbers.sort(function(a,b){
+            return (a.value-b.value);
+        });
+        
+        card = new FM.Modules.Card(++_lastCardId, numbers);
+        _generatedCards.push(card);
+        return card;
+    },
+
+    //checks for winning cards
+    _checkForWinners = function(){
+        var ncards = _generatedCards.length,
+        n_winners = 0;
+        for(var i = 0; i < ncards; i++){
+           if(_generatedCards[i].checkIfComplete()){
+                n_winners++;
+           }
+        }
+        return n_winners;
     },
 
     //generates a new and not existent number
@@ -92,7 +109,8 @@ FM.Services.bingoserver = new function(){
         generateNumber: _generateNumber,
         getGeneratedNumbers: _getGeneratedNumbers,
         resetGeneratedNumbers: _resetGeneratedNumbers,
-        generateCard: _generateCard
+        generateCard: _generateCard,
+        checkForWinners: _checkForWinners
     };
  
 };

@@ -7,9 +7,37 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
+        <title>Playground for BingoJS</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
+        <style>
+            #bingoCardHolder{
+                width: 155px;
+            }
+
+            #bingoCardHolder div{
+                float: left;
+                width: 30px;
+                text-align: center;
+                line-height: 30px;
+                font-size: 15px;
+                margin: 0px 1px 1px 0px;
+                cursor: pointer;
+                background-color: #ccc;
+            }
+
+            #bingoCardHolder div.marked{
+                background-color: #0cf;
+            }
+
+            #bingoCardHolder div.marked:hover{
+                background-color: #0cf;
+            }
+
+            #bingoCardHolder div:hover{
+                background-color: #fc0;
+            }
+        </style>
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -31,12 +59,16 @@
         <script>
             var bs = FM.Services.bingoserver,
             card1 = bs.generateCard(),
-            card2 = bs.generateCard(),
-            n = card1.getNumbers();
+            card1_numbers = card1.getNumbers(),
+            card2 = bs.generateCard();
 
-            console.log(n);
-            console.log(n[0].value);
-            card1.markNumber(n[0].value);
+            /*console.log(bs.checkForWinners());
+            for(var i = 0; i < card1_numbers.length; i++){
+                card1_numbers[i].marked = true;
+            }
+            console.log(bs.checkForWinners());*/
+
+            card1.drawInterface("bingoCardHolder");
             
         </script>
     </body>
