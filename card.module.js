@@ -56,7 +56,7 @@ FM.Modules.Card = function(id, numbers) {
         var nnumbers = _numbers.length,
         nmarked = 0;
         for(var i = 0; i < nnumbers; i++){
-            if(_numbers[i].marked) nmarked++;
+            if(_numbers[i].marked && _numberHasBeenDrawn(_numbers[i].value)) nmarked++;
         }
         if(nmarked == 25){
             _complete = true;
@@ -64,9 +64,18 @@ FM.Modules.Card = function(id, numbers) {
         return _complete;
     }
 
+    //checks if a number exists within an array
+    function _numberHasBeenDrawn(number){
+        var nnumbers = _numbers.length;
+        for(var i = 0; i < nnumbers; i++){
+            if(number == _numbers[i]) return true;
+        }
+        return false;
+    }
+
     //draws DOM interface using a node's id to find the container
-    function _drawInterface(dom_id){
-        var element = document.getElementById(dom_id),
+    function _drawInterface(node_id){
+        var element = document.getElementById(node_id),
         fragment = document.createDocumentFragment(),
         nnumbers = _numbers.length;
 
@@ -74,7 +83,8 @@ FM.Modules.Card = function(id, numbers) {
             element.addEventListener('click', _checkEvents);
             for(var i = 0; i < nnumbers; i++){
                 var div = fragment.appendChild(document.createElement('div'));
-                div.setAttribute('data-card-button', 'true')
+                div.setAttribute('data-card-button', 'true');
+                div.setAttribute('class', 'bingo-card-button');
                 div.appendChild(document.createTextNode(_numbers[i].value));
             }
             element.appendChild(fragment);

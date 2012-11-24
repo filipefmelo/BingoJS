@@ -15,7 +15,7 @@
                 width: 155px;
             }
 
-            #bingoCardHolder div{
+            #bingoCardHolder .bingo-card-button{
                 font-family: verdana;
                 float: left;
                 width: 30px;
@@ -27,17 +27,41 @@
                 background-color: #ccc;
             }
 
-            #bingoCardHolder div.marked{
+            #bingoCardHolder .bingo-card-button.marked{
                 background-color: #0cf;
                 color: #fff;
             }
 
-            #bingoCardHolder div.marked:hover{
+            #bingoCardHolder .bingo-card-button.marked:hover{
                 background-color: #0cf;
             }
 
-            #bingoCardHolder div:hover{
+            #bingoCardHolder .bingo-card-button:hover{
                 background-color: #fc0;
+            }
+
+            #bingoGameTable{
+                width: 495px;
+            }
+
+            #bingoGameTable .bingo-table-number{
+                font-family: verdana;
+                float: left;
+                width: 30px;
+                text-align: center;
+                line-height: 30px;
+                font-size: 15px;
+                margin: 0px 1px 1px 0px;
+                background-color: #ccc;
+            }
+
+            #bingoGameTable .bingo-table-number.marked{
+                background-color: #6f0;
+                color: #fff;
+            }
+
+            h3{
+                clear: both;
             }
         </style>
     </head>
@@ -47,6 +71,17 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
+        <h3>Game table</h3>
+        <div id="bingoGameTable"></div>
+        <div>
+            <div>
+                <button onclick="bs.startDraw();">start</button>
+                <button onclick="bs.stopDraw();"/>stop</button>
+                <button onclick="bs.resetDraw();"/>reset</button>
+            </div>
+            <progress max="6" value="0" id="draw-progress-bar"></progress>
+        </div>
+        <h3>Card</h3>
         <div id="bingoCardHolder"></div>
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -64,6 +99,8 @@
             card1_numbers = card1.getNumbers(),
             card2 = bs.generateCard();
 
+            bs.drawInterface("bingoGameTable");
+
             /*console.log(bs.checkForWinners());
             for(var i = 0; i < card1_numbers.length; i++){
                 card1_numbers[i].marked = true;
@@ -71,6 +108,7 @@
             console.log(bs.checkForWinners());*/
 
             card1.drawInterface("bingoCardHolder");
+            
             
         </script>
     </body>

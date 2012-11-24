@@ -14,6 +14,8 @@ FM.Services.bingoserver = new function(){
     _maxGeneratedNumbers = 75,
     _generatedCards = [],
     _lastCardId = 0,
+    _drawTimer = {},
+    _progressBarTimer = {},
 
 
     //constructor
@@ -73,6 +75,7 @@ FM.Services.bingoserver = new function(){
 
     //generates a new and not existent number
     _generateNumber = function(){
+        if(_numbersToBeGenerated.length == 0) return -1;
     	var number = {},
         randomIndex = Math.round(Math.random()*(_numbersToBeGenerated.length-1)), //get a random index for the elements left in _numbersToBeGenerated
     	generatedNumber = _numbersToBeGenerated[randomIndex];
@@ -98,6 +101,82 @@ FM.Services.bingoserver = new function(){
     //get the generated numbers list
     _getGeneratedNumbers = function(){
         return _generatedNumbers;
+    },
+
+    //draw the game table interface
+    _drawInterface = function(node_id){
+        
+        if(node_id){
+            //cache node_id
+            if(typeof _drawInterface.cache=='undefined') _drawInterface.cache = [];
+            _drawInterface.cache['node_id'] = node_id;
+        }else{
+            if(_drawInterface.cache['node_id']){
+                node_id = _drawInterface.cache['node_id'];
+            }else{
+                return;
+            }
+        }
+        
+
+        var element = document.getElementById(node_id),
+        fragment = document.createDocumentFragment();
+
+        element.innerHTML = '';
+        if(typeof element != 'undefined'){
+            for(var i = 0; i < 75; i++){
+                var div = fragment.appendChild(document.createElement('div'));
+                div.setAttribute('data-table-number', 'true');
+                div.setAttribute('class', 'bingo-table-number');
+                div.setAttribute('id', 'bingo-table-number-'+(i+1));
+                div.appendChild(document.createTextNode(i+1));
+            }
+            element.appendChild(fragment);
+        }
+    },
+
+    //selects a number on the table interface
+    _selectNumber = function(number){
+        var element = document.getElementById('bingo-table-number-'+number);
+        element.className += ' marked';
+    }
+
+    //starts timer for numbers draw
+    _startDraw = function(){
+        var number = _generateNumber(),
+        element = document.getElementById('draw-progress-bar');;
+        _selectNumber(number);
+
+        if(_progressBarTimer){
+            clearInterval(_progressBarTimer);
+        }
+
+        
+        element.setAttribute('value', element.getAttribute('value')*1+1);
+        _progressBarTimer = setInterval(function(){
+            element.setAttribute('value', element.getAttribute('value')*1+1);
+        }, 1000);
+
+        _drawTimer = setInterval(function(){
+            number = _generateNumber();
+            element.setAttribute('value', 0);
+            _selectNumber(number);
+            if(_numbersToBeGenerated.length == 0) _stopDraw();
+        }, 6000);
+    },
+
+    //stops timer for numbers draw
+    _stopDraw = function(){
+        clearInterval(_drawTimer);
+        clearInterval(_progressBarTimer);
+        var element = document.getElementById('draw-progress-bar');
+        element.setAttribute('value', 0);
+    },
+
+    //resets draw state
+    _resetDraw = function(){
+        _resetGeneratedNumbers();
+        _drawInterface();
     };
 
     //first run method
@@ -110,7 +189,11 @@ FM.Services.bingoserver = new function(){
         getGeneratedNumbers: _getGeneratedNumbers,
         resetGeneratedNumbers: _resetGeneratedNumbers,
         generateCard: _generateCard,
-        checkForWinners: _checkForWinners
+        checkForWinners: _checkForWinners,
+        drawInterface: _drawInterface,
+        startDraw: _startDraw,
+        stopDraw: _stopDraw,
+        resetDraw: _resetDraw
     };
  
 };
