@@ -80,9 +80,12 @@ FM.Modules.Card = function(id, numbers) {
         nnumbers = _numbers.length;
 
         if(typeof element != 'undefined'){
-            element.addEventListener('click', _checkEvents);
+            var container = fragment.appendChild(document.createElement('div'));
+            container.setAttribute('id', 'bingo-card-'+_id);
+            container.setAttribute('class', 'bingo-card');
+            container.addEventListener('click', _checkEvents);
             for(var i = 0; i < nnumbers; i++){
-                var div = fragment.appendChild(document.createElement('div'));
+                var div = container.appendChild(document.createElement('div'));
                 div.setAttribute('data-card-button', 'true');
                 div.setAttribute('class', 'bingo-card-button');
                 div.appendChild(document.createTextNode(_numbers[i].value));
@@ -93,6 +96,7 @@ FM.Modules.Card = function(id, numbers) {
 
     //checks triggered events using bubbling
     function _checkEvents(e){
+        console.log(e);
         if(e.target.getAttribute('data-card-button') == 'true'){
             if(e.target.className.indexOf(' marked')!=-1){
                 e.target.className = e.target.className.replace(' marked', '');

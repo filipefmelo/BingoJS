@@ -15,7 +15,6 @@ FM.Services.bingoserver = new function(){
     _generatedCards = [],
     _lastCardId = 0,
     _drawTimer = {},
-    _progressBarTimer = {},
 
 
     //constructor
@@ -144,31 +143,25 @@ FM.Services.bingoserver = new function(){
     //starts timer for numbers draw
     _startDraw = function(){
         var number = _generateNumber(),
-        element = document.getElementById('draw-progress-bar');;
-        _selectNumber(number);
+        element = document.getElementById('draw-progress-bar'),
+        timesRan = 0;
 
-        if(_progressBarTimer){
-            clearInterval(_progressBarTimer);
-        }
-
-        
-        element.setAttribute('value', element.getAttribute('value')*1+1);
-        _progressBarTimer = setInterval(function(){
-            element.setAttribute('value', element.getAttribute('value')*1+1);
-        }, 1000);
+        element.setAttribute('value', ++timesRan);
 
         _drawTimer = setInterval(function(){
-            number = _generateNumber();
-            element.setAttribute('value', 0);
-            _selectNumber(number);
-            if(_numbersToBeGenerated.length == 0) _stopDraw();
-        }, 6000);
+            element.setAttribute('value', ++timesRan);
+            if(timesRan%1000==0){
+                number = _generateNumber();
+                _selectNumber(number);
+                if(_numbersToBeGenerated.length == 0) _stopDraw();
+                timesRan = 0;
+            }
+        }, 10);
     },
 
     //stops timer for numbers draw
     _stopDraw = function(){
         clearInterval(_drawTimer);
-        clearInterval(_progressBarTimer);
         var element = document.getElementById('draw-progress-bar');
         element.setAttribute('value', 0);
     },

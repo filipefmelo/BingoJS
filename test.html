@@ -11,8 +11,10 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <style>
-            #bingoCardHolder{
+            #bingoCardHolder .bingo-card{
                 width: 155px;
+                float: left;
+                margin-right: 20px;
             }
 
             #bingoCardHolder .bingo-card-button{
@@ -79,9 +81,10 @@
                 <button onclick="bs.stopDraw();"/>stop</button>
                 <button onclick="bs.resetDraw();"/>reset</button>
             </div>
-            <progress max="6" value="0" id="draw-progress-bar"></progress>
+            <progress max="1000" value="0" id="draw-progress-bar"></progress>
         </div>
         <h3>Card</h3>
+        <button onclick="addCard('bingoCardHolder');"/>add card</button>
         <div id="bingoCardHolder"></div>
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -94,22 +97,15 @@
         <script src="bingoServer.module.js"></script>
 
         <script>
-            var bs = FM.Services.bingoserver,
-            card1 = bs.generateCard(),
-            card1_numbers = card1.getNumbers(),
-            card2 = bs.generateCard();
-
+            var bs = FM.Services.bingoserver;
             bs.drawInterface("bingoGameTable");
-
-            /*console.log(bs.checkForWinners());
-            for(var i = 0; i < card1_numbers.length; i++){
-                card1_numbers[i].marked = true;
+            
+            function addCard(node_id){
+                var card = FM.Services.bingoserver.generateCard();
+                card.drawInterface(node_id);
             }
-            console.log(bs.checkForWinners());*/
 
-            card1.drawInterface("bingoCardHolder");
-            
-            
+            addCard('bingoCardHolder');
         </script>
     </body>
 </html>
