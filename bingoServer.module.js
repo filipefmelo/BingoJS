@@ -15,6 +15,7 @@ FM.Services.bingoserver = new function(){
     _generatedCards = [],
     _lastCardId = 0,
     _drawTimer = {},
+    _lastNumber = -1,
 
 
     //constructor
@@ -137,7 +138,13 @@ FM.Services.bingoserver = new function(){
     //selects a number on the table interface
     _selectNumber = function(number){
         var element = document.getElementById('bingo-table-number-'+number);
-        element.className += ' marked';
+        element.className += ' lastMarked';
+
+        if(_lastNumber>-1){
+            var lastElement = document.getElementById('bingo-table-number-'+_lastNumber);
+            if(typeof lastElement!='undefined') lastElement.className = lastElement.className.replace(' lastMarked', ' marked');
+        }
+        _lastNumber = number;
     }
 
     //starts timer for numbers draw
@@ -155,6 +162,7 @@ FM.Services.bingoserver = new function(){
                 _selectNumber(number);
                 if(_numbersToBeGenerated.length == 0) _stopDraw();
                 timesRan = 0;
+                _checkForWinners();
             }
         }, 10);
     },

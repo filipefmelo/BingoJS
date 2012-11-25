@@ -17,3 +17,27 @@ FM.Utils.extend = function(destination, source) {
   }
   return destination;
 };
+
+FM.Utils.inArray = function(needle, haystack) {
+    var length = haystack.length;
+    for(var i = 0; i < length; i++) {
+        if(haystack[i] == needle) return true;
+    }
+    return false;
+};
+
+FM.Utils.addClass = function(node_id, class) {
+    var element = document.getElementById(node_id);
+    if(element.className!='') element.className += ' '+class;
+    else element.className += class;
+};
+
+FM.Utils.removeClass = function(node_id, class) {
+    var element = document.getElementById(node_id);
+    element.className.replace(class, '');
+}
+
+FM.Utils.replaceClass = function(node_id, class_origin, class_destination) {
+    var element = document.getElementById(node_id);
+    element.className.replace(class_origin, class_destination);
+}

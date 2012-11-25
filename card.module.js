@@ -52,25 +52,19 @@ FM.Modules.Card = function(id, numbers) {
 
     //checks if card is completely marked
     //TODO: check if the numbers marked match all the numbers added by the bingoServer class
+    //mark card as winner
     function _checkIfComplete(game_numbers){
-        var nnumbers = _numbers.length,
-        nmarked = 0;
+        var nmarked = 0,
+        nnumbers = _numbers.length,
+        element = document.getElementById('bingo-card-'+_id);
         for(var i = 0; i < nnumbers; i++){
-            if(_numbers[i].marked && _numberHasBeenDrawn(_numbers[i].value)) nmarked++;
+            if(_numbers[i].marked && FM.Utils.inArray(_numbers[i].value, game_numbers)) nmarked++;
         }
         if(nmarked == 25){
             _complete = true;
+            element.className += ' winner';
         }
         return _complete;
-    }
-
-    //checks if a number exists within an array
-    function _numberHasBeenDrawn(number){
-        var nnumbers = _numbers.length;
-        for(var i = 0; i < nnumbers; i++){
-            if(number == _numbers[i]) return true;
-        }
-        return false;
     }
 
     //draws DOM interface using a node's id to find the container
@@ -96,7 +90,6 @@ FM.Modules.Card = function(id, numbers) {
 
     //checks triggered events using bubbling
     function _checkEvents(e){
-        console.log(e);
         if(e.target.getAttribute('data-card-button') == 'true'){
             if(e.target.className.indexOf(' marked')!=-1){
                 e.target.className = e.target.className.replace(' marked', '');
