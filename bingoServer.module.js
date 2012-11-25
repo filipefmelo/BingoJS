@@ -150,20 +150,22 @@ FM.Services.bingoserver = new function(){
     //starts timer for numbers draw
     _startDraw = function(){
         var element = document.getElementById('draw-progress-bar'),
-        timesRan = 0;
+        timesRan = 0,
+        timeBetweenDraws = 1;
 
+        element.setAttribute('max', timeBetweenDraws*100);
         element.setAttribute('value', ++timesRan);
 
         _drawTimer = setInterval(function(){
             element.setAttribute('value', ++timesRan);
-            if(timesRan%1000==0){
+            if(timesRan%(timeBetweenDraws*100)==0){
                 number = _generateNumber();
                 _selectNumber(number);
                 if(_numbersToBeGenerated.length == 0) _stopDraw();
                 timesRan = 0;
                 _checkForWinners();
             }
-        }, 10);
+        }, timeBetweenDraws);
     },
 
     //stops timer for numbers draw
