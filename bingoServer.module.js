@@ -140,7 +140,7 @@ FM.Services.bingoserver = new function(){
         var element = document.getElementById('bingo-table-number-'+number);
         element.className += ' lastMarked';
 
-        if(_lastNumber>-1){
+        if(_lastNumber>0){
             var lastElement = document.getElementById('bingo-table-number-'+_lastNumber);
             if(typeof lastElement!='undefined') lastElement.className = lastElement.className.replace(' lastMarked', ' marked');
         }
@@ -149,8 +149,7 @@ FM.Services.bingoserver = new function(){
 
     //starts timer for numbers draw
     _startDraw = function(){
-        var number = _generateNumber(),
-        element = document.getElementById('draw-progress-bar'),
+        var element = document.getElementById('draw-progress-bar'),
         timesRan = 0;
 
         element.setAttribute('value', ++timesRan);

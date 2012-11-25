@@ -26,15 +26,15 @@ FM.Utils.inArray = function(needle, haystack) {
     return false;
 };
 
-FM.Utils.addClass = function(node_id, class) {
+FM.Utils.addClass = function(node_id, class_name) {
     var element = document.getElementById(node_id);
-    if(element.className!='') element.className += ' '+class;
-    else element.className += class;
+    if(element.className!='') element.className += ' '+class_name;
+    else element.className += class_name;
 };
 
-FM.Utils.removeClass = function(node_id, class) {
+FM.Utils.removeClass = function(node_id, class_name) {
     var element = document.getElementById(node_id);
-    element.className.replace(class, '');
+    element.className.replace(class_name, '');
 }
 
 FM.Utils.replaceClass = function(node_id, class_origin, class_destination) {
