@@ -20,7 +20,7 @@ FM.Modules.Card = function(id, numbers) {
         _numbers = numbers;
 
         //define communication channels
-        this.moduleapi.listen("generatedNumber", _checkIfComplete);
+        moduleapi.listen("generatedNumber", _checkIfComplete);
     }
 
     //get id for this card
@@ -63,6 +63,7 @@ FM.Modules.Card = function(id, numbers) {
     //TODO: check if the numbers marked match all the numbers added by the bingoServer class
     //mark card as winner
     function _checkIfComplete(game_numbers){
+        console.log('cars._checkIfComplete');
         var nmarked = 0,
         nnumbers = _numbers.length,
         element = document.getElementById('bingo-card-'+_id);
@@ -102,6 +103,14 @@ FM.Modules.Card = function(id, numbers) {
         }
     }
 
+    //destructor
+    function _removeInterface(){
+       var  element = document.getElementById('bingo-card-'+_id);
+        element.parentNode.removeChild(element);
+        //define communication channels
+        moduleapi.unlisten("generatedNumber", _checkIfComplete);
+    }
+
     //checks triggered events using bubbling
     function _checkEvents(e){
         if(e.target.getAttribute('data-card-button') == 'true'){
@@ -119,6 +128,7 @@ FM.Modules.Card = function(id, numbers) {
         markNumber: _markNumber,
         checkIfComplete: _checkIfComplete,
         complete: _complete,
-        drawInterface: _drawInterface
+        drawInterface: _drawInterface,
+        removeInterface: _removeInterface
     }
 }

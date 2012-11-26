@@ -68,6 +68,7 @@ FM.Services.bingoserver = new function(){
     _checkForWinners = function(){
         var ncards = _generatedCards.length,
         n_winners = 0;
+        console.log(ncards);
         for(var i = 0; i < ncards; i++){
            if(_generatedCards[i].checkIfComplete(_generatedNumbers)){
                 n_winners++;
@@ -180,10 +181,32 @@ FM.Services.bingoserver = new function(){
         element.setAttribute('value', 0);
     },
 
+    //remove a card from play
+    _removeCard = function(card_id){
+        var ncards = _generatedCards.length;
+        for(var i = 0; i < ncards; i++){
+            if(_generatedCards[i].getID()==card_id){
+                _generatedCards[i].removeInterface();
+                break;
+            }
+        }
+        _generatedCards.splice(i,1);
+     },
+
+    //removes all cards from play
+    _removeCards = function(){
+        var ncards = _generatedCards.length;
+        for(var i = 0; i < ncards; i++){
+            _generatedCards[i].removeInterface();
+        }
+        _generatedCards = [];
+    },
+
     //resets draw state
     _resetDraw = function(){
         _resetGeneratedNumbers();
         _drawInterface();
+        _removeCards();
     };
 
     //first run method
