@@ -10,71 +10,6 @@
         <title>Playground for BingoJS</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-        <style>
-            #bingoCardHolder .bingo-card{
-                width: 155px;
-                float: left;
-                margin-right: 20px;
-            }
-
-            #bingoCardHolder .bingo-card.winner{
-                border: 1px solid red;
-            }
-
-            #bingoCardHolder .bingo-card-button{
-                font-family: verdana;
-                float: left;
-                width: 30px;
-                text-align: center;
-                line-height: 30px;
-                font-size: 15px;
-                margin: 0px 1px 1px 0px;
-                cursor: pointer;
-                background-color: #ccc;
-            }
-
-            #bingoCardHolder .bingo-card-button.marked{
-                background-color: #0cf;
-                color: #fff;
-            }
-
-            #bingoCardHolder .bingo-card-button.marked:hover{
-                background-color: #0cf;
-            }
-
-            #bingoCardHolder .bingo-card-button:hover{
-                background-color: #fc0;
-            }
-
-            #bingoGameTable{
-                width: 495px;
-            }
-
-            #bingoGameTable .bingo-table-number{
-                font-family: verdana;
-                float: left;
-                width: 30px;
-                text-align: center;
-                line-height: 30px;
-                font-size: 15px;
-                margin: 0px 1px 1px 0px;
-                background-color: #ccc;
-            }
-
-            #bingoGameTable .bingo-table-number.lastMarked{
-                background-color: #f00;
-                color: #fff;
-            }
-
-            #bingoGameTable .bingo-table-number.marked{
-                background-color: #6f0;
-                color: #fff;
-            }
-
-            h3{
-                clear: both;
-            }
-        </style>
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -118,5 +53,7 @@
                 card.drawInterface(node_id);
             }
         </script>
+
+        <link rel="stylesheet" type="text/css" href="styles/styles.css" />
     </body>
 </html>
