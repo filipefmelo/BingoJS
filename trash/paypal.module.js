@@ -7,7 +7,7 @@ var paypalModule = (function(moduleapi) {
     }
 
     var addItem2 = function(values) {
-        console.log("adding items to paypal")
+        console.log("adding items to paypal");
         basket.push(values);
     }
 

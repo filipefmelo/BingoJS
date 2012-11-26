@@ -23,6 +23,9 @@ FM.Services.bingoserver = new function(){
         //extend bingoServer with baseModule to make it communicable
         FM.Utils.extend(this, FM.Modules.baseModule);
         _resetGeneratedNumbers();
+
+        //define communication channels
+        this.moduleapi.listen("winnerFound", _stopDraw);
     },
 
     //generates a new card
@@ -81,6 +84,9 @@ FM.Services.bingoserver = new function(){
     	generatedNumber = _numbersToBeGenerated[randomIndex];
         _generatedNumbers.push(generatedNumber);
         _numbersToBeGenerated.splice(randomIndex,1); //delete the number from the left possible numbers
+
+        //define communication channels
+        this.moduleapi.broadcast("generatedNumber", _generatedNumbers);
 
         return generatedNumber;
     },
@@ -163,7 +169,6 @@ FM.Services.bingoserver = new function(){
                 _selectNumber(number);
                 if(_numbersToBeGenerated.length == 0) _stopDraw();
                 timesRan = 0;
-                _checkForWinners();
             }
         }, timeBetweenDraws);
     },
@@ -191,7 +196,6 @@ FM.Services.bingoserver = new function(){
         getGeneratedNumbers: _getGeneratedNumbers,
         resetGeneratedNumbers: _resetGeneratedNumbers,
         generateCard: _generateCard,
-        checkForWinners: _checkForWinners,
         drawInterface: _drawInterface,
         startDraw: _startDraw,
         stopDraw: _stopDraw,

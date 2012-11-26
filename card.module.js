@@ -18,6 +18,9 @@ FM.Modules.Card = function(id, numbers) {
 
         _id = id;
         _numbers = numbers;
+
+        //define communication channels
+        this.moduleapi.listen("generatedNumber", _checkIfComplete);
     }
 
     //get id for this card
@@ -37,13 +40,19 @@ FM.Modules.Card = function(id, numbers) {
 
     //marks a number in the card's array
     function _markNumber(number){
-
         var nlength = _numbers.length,
         notFound = true,
-        i = 0;
+        i = 0,
+        bnt = document.getElementById('data-card-button-'+_id+'-'+number);
+
         do{
             if(_numbers[i].value == number){
                 _numbers[i].marked = !numbers[i++].marked;
+                if(bnt.className.indexOf(' marked')!=-1){
+                    bnt.className = bnt.className.replace(' marked', '');
+                }else{
+                    bnt.className += ' marked';
+                }
                 notFound = false;
             }
             i++;
@@ -63,7 +72,11 @@ FM.Modules.Card = function(id, numbers) {
         if(nmarked == 25){
             _complete = true;
             element.className += ' winner';
+            //define communication channels
+            moduleapi.broadcast("winnerFound", _id);
         }
+
+        _markNumber(game_numbers[game_numbers.length-1]);
         return _complete;
     }
 
@@ -80,6 +93,7 @@ FM.Modules.Card = function(id, numbers) {
             container.addEventListener('click', _checkEvents);
             for(var i = 0; i < nnumbers; i++){
                 var div = container.appendChild(document.createElement('div'));
+                div.setAttribute('id', 'data-card-button-'+_id+'-'+_numbers[i].value);
                 div.setAttribute('data-card-button', 'true');
                 div.setAttribute('class', 'bingo-card-button');
                 div.appendChild(document.createTextNode(_numbers[i].value));
@@ -91,11 +105,6 @@ FM.Modules.Card = function(id, numbers) {
     //checks triggered events using bubbling
     function _checkEvents(e){
         if(e.target.getAttribute('data-card-button') == 'true'){
-            if(e.target.className.indexOf(' marked')!=-1){
-                e.target.className = e.target.className.replace(' marked', '');
-            }else{
-                e.target.className += ' marked';
-            }
             _markNumber(e.target.innerHTML);
         }
     }

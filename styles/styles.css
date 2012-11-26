@@ -2,6 +2,8 @@
     width: 155px;
     float: left;
     margin-right: 20px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
 }
 
 #bingoCardHolder .bingo-card.winner{
