@@ -106,17 +106,17 @@
         <script src="bingoServer.module.js"></script>
 
         <script>
+            var bs = FM.Services.bingoserver;
             $(document).ready(function(){
-                var bs = FM.Services.bingoserver;
                 bs.drawInterface("bingoGameTable");
-                
-                function addCard(node_id){
-                    var card = FM.Services.bingoserver.generateCard();
-                    card.drawInterface(node_id);
-                }
 
                 addCard('bingoCardHolder');
             });
+
+            function addCard(node_id){
+                var card = FM.Services.bingoserver.generateCard();
+                card.drawInterface(node_id);
+            }
         </script>
     </body>
 </html>
